@@ -32,12 +32,11 @@ def kmp(string: str, pattern: str):
     Knuth Morris Pratt algorithm - finds position of pattern in string
     :param string: given string
     :param pattern: substring we are searching in string
-    :return: array with tuples (start_position, end_position) of pattern in string <-> -1 if no match
+    :return: tuple (start_position, end_position) of first-ever match in string <-> -1 if no match
     :time complexity: O(n), plus time complexity of get_lps_array() method
     """
     start = time.perf_counter()
     lps = get_lps_array(pattern)
-    res = []
     str_len = len(string)
     pat_len = len(pattern)
     str_idx = 0
@@ -51,8 +50,9 @@ def kmp(string: str, pattern: str):
         else:
             str_idx += 1
         if pat_idx == pat_len:
-            res.append((str_idx - pat_len, str_idx - 1))
-            pat_idx = lps[pat_idx - 1]
+            end = time.perf_counter()
+            print(f"Time taken: {(end - start) * 10 ** 3:.05f}ms")
+            return str_idx - pat_len, str_idx - 1
     end = time.perf_counter()
     print(f"Time taken: {(end-start)*10**3:.05f}ms")
-    return res if len(res) > 0 else -1
+    return -1
